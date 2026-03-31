@@ -1,0 +1,35 @@
+100
+Gene Lewin
+George Brewer
+Prepare 100 food packages
+Take packages to the warehouse
+food and water
+bottle of antibiotics
+bottle of aspirin
+flashlight
+pack of bandages
+Prepare 20 children's packages
+Prepare 100 water packages
+Prepare 5,000 packages
+Joan Simmons
+Chris Jordan
+Julie White
+Gerry Banks
+Baby formula
+open|4
+closed|3
+ongoing|2
+pending|1
+106|308.0
+3
+can of spam
+dried fruit
+men's coat
+sleeping bag
+tent
+women's coat
+6|150.0
+2|151.0
+4|350.0
+10|750.0
+5|1420.0
