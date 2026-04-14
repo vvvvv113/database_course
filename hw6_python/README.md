@@ -1,4 +1,4 @@
-# Homework 1 Example Repo - Bookstore Database + Python CLI
+# Homework6 Bookstore Database + Python CLI
 
 This example creates a small bookstore database in SQLite and then uses Python to interact with it through a command-line interface created by Yiduo Lu.
 
