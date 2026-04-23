@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}The Shelf{% endblock %}
+
+{% block content %}
+
+<!-- Context bar: search feedback or active filters -->
+<div class="context-bar">
+  {% if search_term %}
+    <span class="label">
+      Search results for &ldquo;{{ search_term }}&rdquo;
+      {% if shelves %}&mdash;
+    {% set ns = namespace(total=0) %}
+    {% for s in shelves %}{% set ns.total = ns.total + s.books|length %}{% endfor %}
+    {{ ns.total }} book{{ 's' if ns.total != 1 }} found
+  {% endif %}
+    </span>
+    <a class="clear-link" href="{{ url_for('home') }}">Clear search</a>
+  {% elif read_now %}
+    <span class="label">Showing Reading List only</span>
+  {% elif selected_category_id %}
+    <span class="label">
+      {% for s in shelves %}{{ s.categoryName }}{% endfor %}
+    </span>
+    <a class="clear-link" href="{{ url_for('home', sort=sort_key, readNow='1' if read_now else '0') }}">All shelves</a>
+  {% endif %}
+</div>
+
+{% if shelves %}
+  {% for shelf in shelves %}
+  <section class="shelf-section">
+
+    <div class="shelf-header">
+      <img class="shelf-cat-img" src="/{{ shelf.categoryImage }}" alt="{{ shelf.categoryName }}" />
+      <a
+        class="shelf-label {% if selected_category_id == shelf.categoryId %}active{% endif %}"
+        href="{{ url_for('home', categoryId=shelf.categoryId, sort=sort_key, readNow='1' if read_now else '0') }}"
+      >{{ shelf.categoryName }}</a>
+      <span class="shelf-count">{{ shelf.books|length }} book{{ 's' if shelf.books|length != 1 }}</span>
+    </div>
+
+    <!-- Wooden shelf board with book covers -->
+    <div class="shelf-board">
+      <div class="book-strip">
+        {% for book in shelf.books %}
+        <a class="book-card" href="{{ url_for('book_detail', book_id=book.bookId) }}">
+          {% if book.readNow %}
+          <span class="read-badge">★ Reading</span>
+          {% endif %}
+          <img
+            class="book-card-cover"
+            src="/{{ book.image }}"
+            alt="{{ book.title }}"
+            loading="lazy"
+          />
+          <span class="book-card-title">{{ book.title }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </section>
+  {% endfor %}
+
+{% else %}
+  <div class="empty-state">
+    <h2>No books found</h2>
+    <p>
+      {% if search_term %}
+        No titles match &ldquo;{{ search_term }}&rdquo;.
+      {% elif read_now %}
+        No books are on your Reading List yet.
+      {% else %}
+        The shelves are empty.
+      {% endif %}
+    </p>
+    <a class="clear-link" href="{{ url_for('home') }}">Back to all shelves</a>
+  </div>
+{% endif %}
+
+{% endblock %}

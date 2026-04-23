@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Error — The Shelf{% endblock %}
+
+{% block content %}
+<div class="error-page">
+  <h1>Something went wrong</h1>
+  <p>{{ error }}</p>
+  <a href="{{ url_for('home') }}">Return to The Shelf</a>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}The Shelf{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="{{ url_for('home') }}">The <span>Shelf</span></a>
+
+  <!-- Search form — hidden inputs carry current filter/sort state -->
+  <form class="nav-search" action="{{ url_for('search') }}" method="POST">
+    <input type="hidden" name="sort"    value="{{ sort_key }}">
+    <input type="hidden" name="readNow" value="{{ '1' if read_now else '0' }}">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search books…"
+      value="{{ search_term or '' }}"
+      aria-label="Search books"
+    />
+    <button type="submit" aria-label="Search">&#128269;</button>
+  </form>
+
+  <div class="nav-controls">
+
+    <!-- Category jump links -->
+    <form method="GET" action="{{ url_for('home') }}" id="cat-form">
+      <input type="hidden" name="sort"    value="{{ sort_key }}">
+      <input type="hidden" name="readNow" value="{{ '1' if read_now else '0' }}">
+      <select
+        class="nav-select"
+        name="categoryId"
+        onchange="document.getElementById('cat-form').submit()"
+        aria-label="Browse category"
+      >
+        <option value="">All Shelves</option>
+        {% for cat in categories %}
+        <option
+          value="{{ cat.categoryId }}"
+          {% if selected_category_id == cat.categoryId %}selected{% endif %}
+        >{{ cat.categoryName }}</option>
+        {% endfor %}
+      </select>
+    </form>
+
+    <!-- ReadNow toggle -->
+    <form method="GET" action="{{ url_for('home') }}">
+      <input type="hidden" name="sort"       value="{{ sort_key }}">
+      {% if selected_category_id %}
+      <input type="hidden" name="categoryId" value="{{ selected_category_id }}">
+      {% endif %}
+      {% if read_now %}
+        <!-- currently ON → clicking turns OFF -->
+        <button type="submit" class="btn-toggle active">★ Reading List</button>
+      {% else %}
+        <!-- currently OFF → clicking turns ON -->
+        <input type="hidden" name="readNow" value="1">
+        <button type="submit" class="btn-toggle">★ Reading List</button>
+      {% endif %}
+    </form>
+
+    <!-- Sort selector -->
+    <form method="GET" action="{{ url_for('home') }}" id="sort-form">
+      <input type="hidden" name="readNow" value="{{ '1' if read_now else '0' }}">
+      {% if selected_category_id %}
+      <input type="hidden" name="categoryId" value="{{ selected_category_id }}">
+      {% endif %}
+      <select
+        class="nav-select"
+        name="sort"
+        onchange="document.getElementById('sort-form').submit()"
+        aria-label="Sort books"
+      >
+        {% for key, label in sort_labels.items() %}
+        <option value="{{ key }}" {% if sort_key == key %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </form>
+
+  </div><!-- /.nav-controls -->
+</nav>
+
+<div class="page">
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

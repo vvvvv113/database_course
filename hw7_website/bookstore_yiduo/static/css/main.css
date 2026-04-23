@@ -1,0 +1,495 @@
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --beige:        #F5EFE0;
+  --cream:        #FDF8F0;
+  --wood-dark:    #2C1503;
+  --wood-mid:     #5C3010;
+  --wood-light:   #8B4E1A;
+  --wood-grain:   #3E1E07;
+  --gold:         #C49A3C;
+  --gold-light:   #E8C96A;
+  --text-dark:    #1A0F00;
+  --text-mid:     #5C4033;
+  --text-light:   #8C7060;
+  --badge-green:  #4A7C59;
+  --shadow:       rgba(0, 0, 0, 0.35);
+  --radius:       6px;
+  --font-title:   'Playfair Display', Georgia, serif;
+  --font-body:    'Lato', system-ui, sans-serif;
+}
+
+/* ── Reset & base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--beige);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+
+/* ── Navbar ────────────────────────────────────────────────── */
+.navbar {
+  background: var(--wood-dark);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+  border-bottom: 3px solid var(--wood-grain);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--gold-light); }
+
+/* Search */
+.nav-search {
+  flex: 1;
+  max-width: 380px;
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 30px;
+  padding: 0 0.75rem;
+  transition: background 0.2s;
+}
+.nav-search:focus-within {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--gold);
+}
+.nav-search input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.5rem;
+}
+.nav-search input::placeholder { color: rgba(255,255,255,0.4); }
+.nav-search button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gold);
+  font-size: 1rem;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+.nav-search button:hover { color: var(--gold-light); }
+
+/* Nav controls (right side) */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav-select {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius);
+  color: #e8d8c0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C49A3C'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  padding-right: 1.5rem;
+  transition: border-color 0.2s;
+}
+.nav-select:hover, .nav-select:focus { border-color: var(--gold); }
+.nav-select option { background: var(--wood-dark); color: #e8d8c0; }
+
+.btn-toggle {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 30px;
+  color: #e8d8c0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-toggle:hover { border-color: var(--gold); color: var(--gold); }
+.btn-toggle.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--wood-dark);
+  font-weight: 700;
+}
+
+/* ── Page wrapper ──────────────────────────────────────────── */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+}
+
+/* ── Context bar (search / filter feedback) ────────────────── */
+.context-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  min-height: 1.5rem;
+}
+.context-bar .label {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  color: var(--text-mid);
+  font-style: italic;
+}
+.context-bar .clear-link {
+  font-size: 0.8rem;
+  color: var(--wood-light);
+  border-bottom: 1px dashed var(--wood-light);
+  cursor: pointer;
+}
+.context-bar .clear-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── Shelf section ─────────────────────────────────────────── */
+.shelf-section {
+  margin-bottom: 3.5rem;
+}
+
+.shelf-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+.shelf-cat-img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.7;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.shelf-label {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--wood-mid);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.shelf-label:hover { color: var(--gold); }
+.shelf-label.active { color: var(--gold); }
+
+.shelf-count {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+/* Wooden shelf board */
+.shelf-board {
+  position: relative;
+  padding: 1.5rem 1rem 0;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent calc(100% - 22px),
+      var(--wood-mid) calc(100% - 22px),
+      var(--wood-dark) calc(100% - 12px),
+      var(--wood-grain) calc(100% - 12px),
+      var(--wood-grain) 100%
+    );
+}
+
+/* Horizontal scroll strip */
+.book-strip {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  padding: 0.5rem 1rem 2rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wood-light) transparent;
+}
+.book-strip::-webkit-scrollbar { height: 5px; }
+.book-strip::-webkit-scrollbar-thumb { background: var(--wood-light); border-radius: 3px; }
+.book-strip::-webkit-scrollbar-track { background: transparent; }
+
+/* ── Book card (shelf cover) ───────────────────────────────── */
+.book-card {
+  flex-shrink: 0;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.22s ease;
+  position: relative;
+}
+.book-card:hover { transform: translateY(-14px); }
+
+.book-card-cover {
+  width: 150px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow:
+    -4px 0 8px rgba(0,0,0,0.28),
+    5px 6px 18px var(--shadow);
+}
+
+.book-card-title {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--text-mid);
+  margin-top: 0.6rem;
+  line-height: 1.35;
+  max-width: 150px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* readNow star badge */
+.read-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--gold);
+  color: var(--wood-dark);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+/* ── Expanded detail panel ─────────────────────────────────── */
+.detail-panel {
+  margin-top: 0.25rem;
+  overflow-x: auto;
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 0.5rem 1rem;
+  background: var(--cream);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 0 0 var(--radius) var(--radius);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--wood-light) transparent;
+}
+.detail-panel::-webkit-scrollbar { height: 4px; }
+.detail-panel::-webkit-scrollbar-thumb { background: var(--wood-light); border-radius: 2px; }
+
+.detail-card {
+  flex-shrink: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  padding: 1rem 0.75rem;
+  border-radius: var(--radius);
+  transition: background 0.18s;
+  position: relative;
+}
+.detail-card:hover { background: rgba(196,154,60,0.08); }
+
+.detail-card-cover {
+  width: 130px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: 4px 5px 16px var(--shadow);
+}
+
+.detail-card-title {
+  font-family: var(--font-title);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+.detail-card-author {
+  font-size: 0.72rem;
+  color: var(--text-mid);
+}
+.detail-card-price {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--wood-light);
+}
+.detail-card .read-badge {
+  position: static;
+  display: inline-block;
+  margin-top: 0.1rem;
+}
+
+.btn-detail {
+  display: inline-block;
+  margin-top: auto;
+  font-size: 0.72rem;
+  color: var(--wood-mid);
+  border: 1px solid var(--wood-mid);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  transition: all 0.18s;
+}
+.btn-detail:hover {
+  background: var(--wood-mid);
+  color: var(--cream);
+}
+
+/* ── Empty state ───────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-light);
+}
+.empty-state h2 {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Book detail page ──────────────────────────────────────── */
+.detail-page {
+  max-width: 900px;
+  margin: 3rem auto;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3rem;
+  align-items: start;
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.detail-cover {
+  width: 100%;
+  border-radius: 2px 6px 6px 2px;
+  box-shadow: -4px 0 8px rgba(0,0,0,0.2), 6px 6px 20px var(--shadow);
+}
+
+.detail-info h1 {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  line-height: 1.25;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+}
+
+.detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.detail-meta .row {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.detail-meta .key {
+  color: var(--text-light);
+  min-width: 80px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: 0.05rem;
+}
+.detail-meta .val { color: var(--text-dark); font-weight: 500; }
+.detail-meta .price { font-size: 1.2rem; font-weight: 700; color: var(--wood-light); }
+
+.detail-info .read-badge {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  margin-bottom: 1.5rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--wood-mid);
+  border: 1px solid var(--wood-mid);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  margin-bottom: 2rem;
+  transition: all 0.18s;
+}
+.btn-back:hover { background: var(--wood-mid); color: var(--cream); }
+
+/* ── Error page ────────────────────────────────────────────── */
+.error-page {
+  text-align: center;
+  padding: 6rem 2rem;
+}
+.error-page h1 {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  color: var(--wood-mid);
+  margin-bottom: 1rem;
+}
+.error-page p { color: var(--text-mid); margin-bottom: 2rem; }
+.error-page a {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .navbar { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.75rem; }
+  .nav-search { max-width: 100%; order: 3; flex-basis: 100%; }
+  .nav-controls { flex-wrap: wrap; }
+  .detail-page { grid-template-columns: 1fr; }
+  .detail-cover { max-width: 200px; }
+  .page { padding: 1rem 1rem 3rem; }
+}

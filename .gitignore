@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# SQLite databases
+*.db
+
+# Embedded repos
+hw7_website/Assignment_7_BookStore_Part_II/
