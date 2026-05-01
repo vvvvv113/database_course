@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }} — The Shelf{% endblock %}
+
+{% block content %}
+
+<a class="btn-back"
+   href="{{ url_for('home', categoryId=book.categoryId, sort=sort_key, readNow='1' if read_now else '0') }}">
+  &#8592; Back to {{ book.categoryName }}
+</a>
+
+<div class="detail-page">
+
+  <div>
+    <img
+      class="detail-cover"
+      src="/{{ book.image }}"
+      alt="{{ book.title }}"
+    />
+  </div>
+
+  <div class="detail-info">
+    <h1>{{ book.title }}</h1>
+
+    {% if book.readNow %}
+    <span class="read-badge">&#9733; On Reading List</span>
+    {% endif %}
+
+    <div class="detail-meta">
+      <div class="row">
+        <span class="key">Author</span>
+        <span class="val">{{ book.author }}</span>
+      </div>
+      <div class="row">
+        <span class="key">Category</span>
+        <span class="val">{{ book.categoryName }}</span>
+      </div>
+      <div class="row">
+        <span class="key">ISBN</span>
+        <span class="val">{{ book.isbn }}</span>
+      </div>
+      <div class="row">
+        <span class="key">Price</span>
+        <span class="val price">${{ '%.2f'|format(book.price) }}</span>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      <a href="{{ url_for('edit', book_id=book.bookId) }}" class="btn-edit">&#9998; Edit</a>
+      <a href="{{ url_for('delete', book_id=book.bookId) }}"
+         class="btn-delete"
+         onclick="return confirm('Delete this book?')">&#128465; Delete</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

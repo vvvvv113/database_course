@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Edit Book — The Shelf{% endblock %}
+
+{% block content %}
+
+<div class="add-book-page">
+  <h1>Edit Book</h1>
+  <form method="POST" action="{{ url_for('edit_post', book_id=book.bookId) }}" class="add-book-form">
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required value="{{ book.title }}" />
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" required value="{{ book.author }}" />
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN</label>
+      <input type="text" id="isbn" name="isbn" value="{{ book.isbn }}" />
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price ($)</label>
+      <input type="number" id="price" name="price" step="0.01" min="0" required
+             value="{{ '%.2f'|format(book.price) }}" />
+    </div>
+
+    <div class="form-group">
+      <label for="image">Image filename</label>
+      <input type="text" id="image" name="image"
+             value="{{ book.image | replace('static/book/', '') }}" />
+      <small>File should be placed in <code>static/book/</code></small>
+    </div>
+
+    <div class="form-group">
+      <label for="categoryId">Category</label>
+      <select id="categoryId" name="categoryId" required>
+        {% for cat in categories %}
+        <option value="{{ cat.categoryId }}"
+          {% if cat.categoryId == book.categoryId %}selected{% endif %}
+        >{{ cat.categoryName }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Reading List</label>
+      <label class="checkbox-label">
+        <input type="checkbox" name="readNow" value="1"
+               {% if book.readNow %}checked{% endif %} />
+        Mark as "Reading Now"
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">Save Changes</button>
+      <a href="{{ url_for('read') }}" class="btn-back" style="margin-bottom:0">Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+{% endblock %}

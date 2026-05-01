@@ -1,0 +1,32 @@
+[
+  {
+    "categoryId": 1,
+    "categoryName": "Psychology",
+    "categoryImage": "static/category/psychology.avif"
+  },
+  {
+    "categoryId": 2,
+    "categoryName": "Big Picture & History",
+    "categoryImage": "static/category/big_picture.webp"
+  },
+  {
+    "categoryId": 3,
+    "categoryName": "Philosophy",
+    "categoryImage": "static/category/philosophy.jpg"
+  },
+  {
+    "categoryId": 4,
+    "categoryName": "Literature",
+    "categoryImage": "static/category/literature.webp"
+  },
+  {
+    "categoryId": 5,
+    "categoryName": "Sci-Fi & Thought Experiments",
+    "categoryImage": "static/category/scifi.jpg"
+  },
+  {
+    "categoryId": 6,
+    "categoryName": "Social & Gender Critique",
+    "categoryImage": "static/category/women.webp"
+  }
+]

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}All Books — The Shelf{% endblock %}
+
+{% block content %}
+
+<div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem">
+  <h2 style="font-family:var(--font-title);font-size:1.4rem;color:var(--wood-mid)">All Books</h2>
+  <span style="font-size:0.8rem;color:var(--text-light)">{{ books|length }} titles</span>
+  <a href="{{ url_for('create') }}" class="btn-toggle" style="margin-left:auto">+ Add Book</a>
+</div>
+
+{% if books %}
+<div class="read-table-wrap">
+  <table class="read-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td class="read-img-cell">
+          <img src="/{{ book.image }}" alt="{{ book.title }}" class="read-cover" />
+        </td>
+        <td>
+          <a href="{{ url_for('book_detail', book_id=book.bookId) }}" class="read-title">
+            {{ book.title }}
+          </a>
+          {% if book.readNow %}
+          <span class="read-badge" style="position:static;display:inline-block;margin-left:4px">&#9733;</span>
+          {% endif %}
+        </td>
+        <td style="color:var(--text-mid);font-size:0.88rem">{{ book.author }}</td>
+        <td style="color:var(--text-light);font-size:0.82rem;white-space:nowrap">{{ book.isbn }}</td>
+        <td style="font-size:0.88rem">{{ book.categoryName }}</td>
+        <td style="font-weight:700;color:var(--wood-light);white-space:nowrap">${{ '%.2f'|format(book.price) }}</td>
+        <td class="read-actions">
+          <a href="{{ url_for('edit', book_id=book.bookId) }}" class="btn-edit" style="font-size:0.78rem;padding:0.25rem 0.65rem">Edit</a>
+          <a href="{{ url_for('delete', book_id=book.bookId) }}"
+             class="btn-delete" style="font-size:0.78rem;padding:0.25rem 0.65rem"
+             onclick="return confirm('Delete this book?')">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <h2>No books yet</h2>
+  <p><a href="{{ url_for('create') }}" class="clear-link">Add the first book</a></p>
+</div>
+{% endif %}
+
+{% endblock %}
